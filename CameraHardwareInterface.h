@@ -128,18 +128,12 @@ public:
     virtual status_t    startPreview() = 0;
 
 #ifdef USE_GETBUFFERINFO
-     /**
+    /**
      * Query the recording buffer information from HAL.
      * This is needed because the opencore expects the buffer
      * information before starting the recording.
      */
     virtual status_t    getBufferInfo(sp<IMemory>& Frame, size_t *alignedSize) = 0;
-#endif
-#ifdef USE_ENCODEDATA
-    /**
-     * Encode the YUV data.
-     */
-    virtual void        encodeData() = 0;
 #endif
 
     /**
@@ -147,10 +141,6 @@ public:
      */
     virtual bool         useOverlay() {return false;}
     virtual status_t     setOverlay(const sp<Overlay> &overlay) {return BAD_VALUE;}
-
-    /* For compatibility with TouchPad libcamera */
-    virtual void         stub1() = 0;
-    virtual void         stub2() = 0;
 
     /**
      * Stop a previously started preview.
@@ -210,12 +200,10 @@ public:
      */
     virtual status_t    cancelPicture() = 0;
 
-    /* For compatibility with TouchPad libcamera */
-    virtual void        stopSnapshot() = 0;
-
-    /** Set the camera parameters. */
+    /**
+     * Set the camera parameters. This returns BAD_VALUE if any parameter is
+     * invalid or not supported. */
     virtual status_t    setParameters(const CameraParameters& params) = 0;
-
 
     /** Return the camera parameters. */
     virtual CameraParameters  getParameters() const = 0;
@@ -235,10 +223,8 @@ public:
      * Dump state of the camera hardware
      */
     virtual status_t dump(int fd, const Vector<String16>& args) const = 0;
-};
 
-/** factory function to instantiate a camera hardware object */
-extern "C" sp<CameraHardwareInterface> openCameraHardware();
+};
 
 /**
  * The functions need to be provided by the camera HAL.
