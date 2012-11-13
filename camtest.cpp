@@ -121,7 +121,7 @@ static char *menu_items[] = {
 
 static void print_menu()
 {
-	int i;
+	unsigned int i;
 	for (i = 0; i < sizeof(menu_items)/sizeof(menu_items[0]); ++i)
 	{
 		printf("%c. %s\n", i + 97, menu_items[i]);
@@ -150,7 +150,7 @@ int main(int argc, char **argv)
 #ifdef BOARD_USE_FROYO_LIBCAMERA
 	camera = openCameraHardware();
 #else
-	camera = HAL_openCameraHardware();
+	camera = HAL_openCameraHardware(0);
 #endif
 	if (camera == NULL)
 	{
